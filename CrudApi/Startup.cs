@@ -21,11 +21,13 @@ namespace CrudApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
+
             //Dados em Memoria
-            // services.AddDbContext<Contexto>(options => options.UseInMemoryDatabase("Database"));
+            services.AddDbContext<Contexto>(options => options.UseInMemoryDatabase("Database"));
 
             //Salvando no banco
-            services.AddDbContext<Contexto>(options => options.UseSqlServer(Configuration.GetConnectionString("conexao")));
+            // services.AddDbContext<Contexto>(options => options.UseSqlServer(Configuration.GetConnectionString("conexao")));
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -48,6 +50,8 @@ namespace CrudApi
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
             app.UseEndpoints(endpoints =>
             {
