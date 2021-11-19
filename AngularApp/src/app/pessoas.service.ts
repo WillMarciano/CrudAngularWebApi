@@ -22,7 +22,7 @@ export class PessoasService {
   }
 
   GetById(pessoaId: number): Observable<Pessoa> {
-    const apiUrl = '${this.url}/${pessoaId}';
+    const apiUrl = `${this.url}/${pessoaId}`;
     return this.http.get<Pessoa>(apiUrl);
   }
 

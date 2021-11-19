@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CrudApi.Controllers
 {
+    [ApiController]
     [Route("api/[controller]")]
     public class PessoasController : ControllerBase
     {
@@ -36,6 +37,7 @@ namespace CrudApi.Controllers
             return Ok(pessoa);
         }
 
+
         [HttpPost]
         [Route("")]
         public async Task<ActionResult<List<Pessoa>>> Post([FromBody] Pessoa model)
@@ -56,24 +58,14 @@ namespace CrudApi.Controllers
         }
 
         [HttpPut]
-        [Route("{id:int}")]
-        public async Task<ActionResult<List<Pessoa>>> Put(int id, [FromBody] Pessoa model)
+        [Route("")]
+        public async Task<ActionResult<List<Pessoa>>> Put([FromBody] Pessoa model)
         {
-            if (id != model.PessoaId)
-                return NotFound(new { message = "Ops, Registro não encontrado" });
-
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
             try
             {
                 _contexto.Entry<Pessoa>(model).State = EntityState.Modified;
                 await _contexto.SaveChangesAsync();
                 return Ok(model);
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                return BadRequest(new { message = $"Este registro já foi atualizado" });
             }
             catch (Exception ex)
             {
